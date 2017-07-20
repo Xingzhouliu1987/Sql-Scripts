@@ -1,5 +1,10 @@
 # Create New Grouped MSA
 
+Requirements:
+- Powershell 2
+- Windows Server 2012 or up
+- SQL Server 2014 and up (if used as SQL Server Service Accounts)
+
 This powershell script automates the following steps:
 
 (1) Get a security group by user prompt or create one if needed (uses current user context)
