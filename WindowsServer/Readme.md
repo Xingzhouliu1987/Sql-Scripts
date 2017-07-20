@@ -15,6 +15,8 @@ This powershell script automates the following steps:
  
  (5) Installs the gMSA onto the chosen host
  
+ (6) Prints output status for each account/host pair onto a csv file (inputfilepath) + ".out"
+ 
  This script does not need to be run on the target host.
  
  # TODO
