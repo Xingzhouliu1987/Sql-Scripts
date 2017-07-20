@@ -6,8 +6,8 @@ This powershell script automates the following steps:
 (2) Creates new gMSA's based on an input csv with columns 
 
             Account Name, Host
-            
-    where Host is the host the account will run on
+            .... , <Target Host>
+ 
  (3) Adds the new gMSA to the chosen Security Group
  (4) Adds the target host to the chosen Security Group
  (5) Installs the gMSA onto the chosen host
