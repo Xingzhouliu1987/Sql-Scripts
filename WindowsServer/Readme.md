@@ -27,7 +27,7 @@ This powershell script automates the following steps:
             Account Name, Host
             .... , <Target Host>
  
- (3) Adds target hosts to the chosen Security Group, purges klist and forces a gpupdate (run on target host)
+ (3) Adds target hosts to the chosen Security Group, purges klist and forces a gpupdate (run on target host) if target host has not been joined to group.
  
  (4) Creates a new gMSA based on the input csv
  
