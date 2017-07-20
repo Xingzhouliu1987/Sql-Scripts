@@ -4,6 +4,14 @@ Requirements:
 - Powershell 2
 - Windows Server 2012 or up
 - SQL Server 2014 and up (if used as SQL Server Service Accounts)
+- A KdsRootKey already present
+
+To Create a KdsRootKey 
+    for Dev
+      Add-KdsRootKey -EffectiveTime ((get-date).addhours(-10))
+    for Prod
+      Add-KdsRootKey -EffectiveImmediately
+      (to ensure the key is propogated to all Domain Controllers, the key will not be available until 10 hours after creation).
 
 This powershell script automates the following steps:
 
