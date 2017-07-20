@@ -5,7 +5,8 @@ Requirements:
 - Windows Server 2012 or up
 - SQL Server 2014 and up (if used as SQL Server Service Accounts)
 - A KdsRootKey already present
-- Remote Powershell must be enabled for the target host
+- Remote Powershell must be enabled for the target host (uses Invoke-Command if target host not yet joined to security group to
+  join the host and refresh state)
 - User must be a Domain Administrator
 
 To Create a KdsRootKey 
@@ -26,7 +27,7 @@ This powershell script automates the following steps:
             Account Name, Host
             .... , <Target Host>
  
- (3) Adds target hosts to the chosen Security Group, purges klist and forces a gpupdate
+ (3) Adds target hosts to the chosen Security Group, purges klist and forces a gpupdate (run on target host)
  
  (4) Creates a new gMSA based on the input csv
  
