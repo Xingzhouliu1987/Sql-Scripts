@@ -1,4 +1,4 @@
-# Create New Grouped MSA
+# Batch Create New Grouped Managed Service Accounts
 
 Requirements:
 - Powershell 2
