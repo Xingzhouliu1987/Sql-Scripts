@@ -5,6 +5,8 @@ Requirements:
 - Windows Server 2012 or up
 - SQL Server 2014 and up (if used as SQL Server Service Accounts)
 - A KdsRootKey already present
+- Remote Powershell must be enabled for the target host
+- User must be a Domain Administrator
 
 To Create a KdsRootKey 
 
