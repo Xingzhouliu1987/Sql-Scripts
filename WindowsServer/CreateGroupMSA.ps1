@@ -7,10 +7,14 @@ $group = Get-ADGroup $GroupName
    Write-Host 'Creating Security Group' + ($GroupName)
    $group = Get-ADGroup $GroupName
 }
-
+$groupmembers = Get-ADGroupMember $group
+$set = New-Object System.Collections.Generic.HashSet[string]
 $myFQDN=(Get-WmiObject win32_computersystem).Domain
 $accounts = New-Object System.Collections.ArrayList;
 
+foreach($item in $groupmembers) {
+   $set.Add($item.SID)
+}
 
 $path = Read-Host -Prompt 'FilePath';
 $csv = Import-csv -path $path;
@@ -19,7 +23,12 @@ foreach($line in $csv) {
       $dnsHostName = (($account) + "." + ($myFQDN))
       $TargetHost = ($line.'Host')
       $accounts.Add( @($account,$dnsHostName,$TargetHost) );
-      Add-ADGroupMember $group -Members $computer
+      $computer = Get-ADComputer $TargetHost;
+      if($set.Contains($computer.SID) -ne $true) {
+          Add-ADGroupMember $group -Members $computer
+          Invoke-Command -ComputerName $TargetHost -ScriptBlock {klist purge}
+          Invoke-Command -ComputerName $TargetHost -ScriptBlock {gpupdate /force}
+      }
 }
 
 
@@ -29,7 +38,7 @@ foreach($newaccount in $accounts) {
  try {
   $msg = 'Ok'
   $good = 1
-  $computer = Get-ADComputer $newaccount[2];
+  
  try{
     New-ADServiceAccount -name $newaccount[0] -DNSHostName $newaccount[1] -PrincipalsAllowedToRetrieveManagedPassword $group
     
