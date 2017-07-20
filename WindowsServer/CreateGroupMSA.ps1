@@ -19,7 +19,7 @@ foreach($line in $csv) {
       $dnsHostName = (($account) + "." + ($myFQDN))
       $TargetHost = ($line.'Host')
       $accounts.Add( @($account,$dnsHostName,$TargetHost) );
-
+      Add-ADGroupMember $group -Members $computer
 }
 
 
@@ -39,7 +39,7 @@ foreach($newaccount in $accounts) {
  }
  
   $svcacct = Get-ADServiceAccount $newaccount[0]
-  Add-ADGroupMember $group -Members $computer
+  
   Add-ADGroupMember $group -Members $svcacct
   Add-ADComputerServiceAccount -Computer $computer -ServiceAccount $svcacct
 
