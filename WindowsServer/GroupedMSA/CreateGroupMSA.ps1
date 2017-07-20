@@ -20,51 +20,66 @@ $path = Read-Host -Prompt 'FilePath';
 $csv = Import-csv -path $path;
 foreach($line in $csv) {
       $account = ($line.'Account Name')
-      $dnsHostName = (($account) + "." + ($myFQDN))
       $TargetHost = ($line.'Host')
-      $accounts.Add( @($account,$dnsHostName,$TargetHost) );
-      $computer = Get-ADComputer $TargetHost;
+      $fqdn = (($account) + "." + ($myFQDN))
+      $runnable = 1
+      $msg = ''
+      
+      $computer = Get-ADComputer $TargetHost
+
       if($set.Contains($computer.SID) -ne $true) {
-          Add-ADGroupMember $group -Members $computer
-          Invoke-Command -ComputerName $TargetHost -ScriptBlock {klist purge}
-          Invoke-Command -ComputerName $TargetHost -ScriptBlock {gpupdate /force}
+	    try {
+            Add-ADGroupMember $group -Members $computer
+            Invoke-Command -ComputerName $TargetHost -ScriptBlock {klist purge}
+            Invoke-Command -ComputerName $TargetHost -ScriptBlock {gpupdate /force}
+            $set.Add($computer.SID)
+          } catch {
+             $msg = $_.Exception.Message + ": Could not add computer to group"
+             $runnable = 0
+         }
       }
+      $inputRow = @{
+            account = $account 
+            dnsHostName = $fqdn 
+            host = $TargetHost
+            runnable = $runnable
+            msg = $msg
+            date = get-date
+      }
+      $accounts += New-Object PSObject -Property $inputRow
 }
 
 
 $output = @()
 
 foreach($newaccount in $accounts) {
+
+if($newaccount.runnable -eq 1) { 
  try {
   $msg = 'Ok'
   $good = 1
   
  try{
-    New-ADServiceAccount -name $newaccount[0] -DNSHostName $newaccount[1] -PrincipalsAllowedToRetrieveManagedPassword $group
+    New-ADServiceAccount -name $newaccount.account -DNSHostName $newaccount.dnsHostName -PrincipalsAllowedToRetrieveManagedPassword $group
     
  } catch [Microsoft.ActiveDirectory.Management.ADIdentityAlreadyExistsException] 
  {
-      $msg = 'Account Already Exists'
+      $newaccount.msg = 'Account Already Exists'
  }
- 
-  $svcacct = Get-ADServiceAccount $newaccount[0]
+      $svcacct = Get-ADServiceAccount $newaccount.account
   
-  Add-ADGroupMember $group -Members $svcacct
-  Add-ADComputerServiceAccount -Computer $computer -ServiceAccount $svcacct
+     Add-ADGroupMember $group -Members $svcacct
+     Add-ADComputerServiceAccount -Computer $computer -ServiceAccount $svcacct
+     $newaccount.runnable = 2
 
-  } catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]  {
-     $msg =  $_.Exception.Message
-     $good = 0
-  }
-   $outrow = @{
-      Date = get-date
-      ComputerName = $newaccount[2]
-      Account = $newaccount[0]
-      FQDN = $newaccount[1]
-      good = $good
-      message = $msg
-   }
-   $output += New-Object PSObject -Property  $outrow
+  } catch  {
+     $newaccount.msg =  $_.Exception.Message 
+     $newaccount.runnable = 0
+  } 
+ }
+ $output += $newaccount
+   
 
  }
+
  $output | Export-Csv -Path (($path) + '.out') -NoTypeInformation
