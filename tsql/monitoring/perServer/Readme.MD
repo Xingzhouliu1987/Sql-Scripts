@@ -19,4 +19,15 @@ Queries file and disk space related DMV's, returning a table that provides infor
 | FreeSpaceMB   | free space remaining in the volume on which the specified file is located if autogrow is unrestricted, the lesser of maximum file size or free space on volume otherwise.                 |
 | autoGrowthMB  | autogrowth increment of the file, 0 if autogrowth is disabled                             |
 
-diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom].[disk_free_space_by_file] in a management data warehouse.
+diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom_snapshots].[disk_free_space_by_file] in a management data warehouse.
+
+# CPUUtilization.sql
+
+Queries ring buffer to collect CPU usage for the previous 15 minutes (data source provides CPU Usage Information per minute).  CPUUtilizationInstall.sql will install a data collector set on the chosen server that snapshots this query once every 15 minutes, pushing it to [custom_snapshots].[cpu_usage_records] in a management data warehouse.
+
+| Column        | Description                                                                               | 
+| ------------- |:-----------------------------------------------------------------------------------------:|
+| SQLServerProcessCPU   | Average CPU Usage (prior 15 minutes) by the SQL Server process                                |
+| MaxSQLServerProcessCPU       | Average CPU Usage (prior 15 minutes) by the SQL Server process               |
+| OtherProcessCPU | Average CPU Usage of other processes (over prior 15 minutes), taken as 100-SystemIdle-SQLServerProcessCPU  |
+| MaxOtherProcessCPU          | Average CPU Usage of other processes                |
