@@ -31,3 +31,4 @@ Queries ring buffer to collect CPU usage for the previous 15 minutes (data sourc
 | MaxSQLServerProcessCPU       | Average CPU Usage (prior 15 minutes) by the SQL Server process               |
 | OtherProcessCPU | Average CPU Usage of other processes (over prior 15 minutes), taken as 100-SystemIdle-SQLServerProcessCPU  |
 | MaxOtherProcessCPU          | Average CPU Usage of other processes                |
+| SystemIdle          | Average CPU Idle Capacity (over prior 15 minutes)             |
