@@ -2,7 +2,7 @@
 
 
 # diskSpaceUsage.sql
-Queries file and disk space related DMV's, returning a table that provides information for each file on the server, including which disk the file resides on and space remaining on that disk. Primary purpose is to monitor physical disk space availability for each file
+Queries file and disk space related DMV's, returning a table that provides information for each file on the server, including which disk the file resides on and space remaining on that disk. Primary purpose is to monitor physical disk space availability for each file, checking to make sure that autogrow enabled files don't exhaust disk space.
 
 | Column        | Description                                                                               | 
 | ------------- |:-----------------------------------------------------------------------------------------:|
@@ -19,4 +19,4 @@ Queries file and disk space related DMV's, returning a table that provides infor
 | FreeSpaceMB   | free space remaining in the volume on which the specified file is located                 |
 | autoGrowthMB  | autogrowth increment of the file, 0 if autogrowth is disabled                             |
 
-
+diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query.
