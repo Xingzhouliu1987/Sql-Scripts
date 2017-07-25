@@ -19,4 +19,4 @@ Queries file and disk space related DMV's, returning a table that provides infor
 | FreeSpaceMB   | free space remaining in the volume on which the specified file is located if autogrow is unrestricted, the lesser of maximum file size or free space on volume otherwise.                 |
 | autoGrowthMB  | autogrowth increment of the file, 0 if autogrowth is disabled                             |
 
-diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query.
+diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom].[disk_free_space_by_file] in a management data warehouse.
