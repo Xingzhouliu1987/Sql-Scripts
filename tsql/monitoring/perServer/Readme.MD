@@ -20,7 +20,11 @@ Queries file and disk space related DMV's, returning a table that provides infor
 | FreeSpaceMB   | free space remaining in the volume on which the specified file is located if autogrow is unrestricted, the lesser of maximum file size or free space on volume otherwise.                 |
 | autoGrowthMB  | autogrowth increment of the file, 0 if autogrowth is disabled                             |
 
-diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom_snapshots].[disk_free_space_by_file] in a management data warehouse.
+diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom_snapshots].[disk_free_space_by_file] in a management data warehouse. 
+
+Required Parameters: 
+     @proxy = 'SQL Agent Execution Proxy';
+    
 
 # CPUUtilization.sql
 
@@ -33,3 +37,6 @@ Queries ring buffer to collect CPU usage for the previous 15 minutes (data sourc
 | OtherProcessCPU | Average CPU Usage of other processes (over prior 15 minutes), taken as 100-SystemIdle-SQLServerProcessCPU  |
 | MaxOtherProcessCPU          | Average CPU Usage of other processes                |
 | SystemIdle          | Average CPU Idle Capacity (over prior 15 minutes)             |
+
+Required Parameters: 
+     @proxy = 'SQL Agent Execution Proxy';
