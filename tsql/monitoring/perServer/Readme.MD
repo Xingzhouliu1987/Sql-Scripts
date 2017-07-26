@@ -23,6 +23,7 @@ Queries file and disk space related DMV's, returning a table that provides infor
 diskSpaceUsageInstall.sql will install a data collector set on the chosen server that snapshot this query, pushing it to [custom_snapshots].[disk_free_space_by_file] in a management data warehouse. 
 
 Required Parameters: 
+
      @proxy = 'SQL Agent Execution Proxy';
     
 
@@ -39,6 +40,7 @@ Queries ring buffer to collect CPU usage for the previous 15 minutes (data sourc
 | SystemIdle          | Average CPU Idle Capacity (over prior 15 minutes)             |
 
 Required Parameters: 
+
      @proxy = 'SQL Agent Execution Proxy';
 
 # AlertErrorConditionsInstall.sql
@@ -50,5 +52,7 @@ Installs email alerts for high severity error conditions and error codes that in
 | Severity 19-25 | Fatal Errors                                                                             |
 | Err. 823/824  | Possible corruption of data on disk. Run DBCC CHECKDB and DBCC CHECKTABLE on all objects with files located on that volume. Check Hardware. |
 | Err. 855/856  | Corruption of pages in memory. Code 856 indicates that SQL Server was able to automatically fix the corrupt page by de-commiting. Memory should be checked, as well as dll extensions that write to SQL Server data pages. |
+
+
 Required Parameters: 
     @OperatorName = N'SQL Server Agent Operator';
