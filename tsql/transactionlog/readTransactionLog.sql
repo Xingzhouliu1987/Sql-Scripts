@@ -10,9 +10,9 @@ select * from dbo.adminHelperPartitionObjectMatch
 /*
 	get user behind log record
 */
-select suser_sname([Transaction SID]), count(*) opct 
-       FROM fn_dblog(null,null) 
-	   group by suser_name([Transaction SID]) ORDER BY opct DESC;
+select suser_sname([Transaction SID]) as sid, count(*) opct 
+       FROM fn_dblog(null,null) d
+	   group by d.[Transaction SID] ORDER BY opct DESC;
 
 select suser_sname([Transaction SID]) AS user_name,
 		[Current LSN]  FROM fn_dblog(null,null) 
